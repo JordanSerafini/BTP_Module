@@ -2,7 +2,7 @@ import { HydratedDocument, Types } from 'mongoose';
 import { Devis } from './devis.interface';
 import { Fourniture } from './fourniture.interface';
 import { Outils } from './outils.interface';
-import { Personel } from './personel.interface';
+import { Personnel } from './personnel.interface';
 
 export interface Chantier {
   _id: Types.ObjectId;
@@ -15,7 +15,7 @@ export interface Chantier {
   status: string;
   debut_prevu: Date;
   fin_prevu: Date;
-  personnels: Personel[];
+  personnels: Personnel[];
   fournitures: Fourniture[];
   outillages: Outils[];
   devis: Devis[];

@@ -16,7 +16,49 @@ export class ChantierService {
   }
 
   async findAll(): Promise<Chantier[]> {
-    return this.chantierModel.find().exec();
+    // return this.chantierModel
+    //   .find()
+    //   .populate('personnels')
+    //   .populate('fournitures')
+    //   .populate('outillages')
+    //   .populate('devis')
+    //   .exec();
+    return this.chantierModel
+      .aggregate([
+        {
+          $lookup: {
+            from: 'personnels',
+            localField: 'personnels',
+            foreignField: '_id',
+            as: 'personnels_details',
+          },
+        },
+        {
+          $lookup: {
+            from: 'fournitures',
+            localField: 'fournitures',
+            foreignField: '_id',
+            as: 'fournitures_details',
+          },
+        },
+        {
+          $lookup: {
+            from: 'outils',
+            localField: 'outillages',
+            foreignField: '_id',
+            as: 'outillages_details',
+          },
+        },
+        {
+          $lookup: {
+            from: 'devis',
+            localField: 'devis',
+            foreignField: '_id',
+            as: 'devis_details',
+          },
+        },
+      ])
+      .exec();
   }
 
   async findOne(id: string): Promise<Chantier> {

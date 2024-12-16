@@ -4,7 +4,7 @@ import { Document, Types } from 'mongoose';
 import { Devis } from 'src/interfaces/devis.interface';
 import { Fourniture } from 'src/interfaces/fourniture.interface';
 import { Outils } from 'src/interfaces/outils.interface';
-import { Personel } from 'src/interfaces/personel.interface';
+import { Personnel } from 'src/interfaces/personnel.interface';
 
 @Schema({ timestamps: true })
 export class Chantier {
@@ -32,16 +32,16 @@ export class Chantier {
   @Prop()
   fin_prevu: Date;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Personel' }] })
-  personnels: Personel[];
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Personnel', index: true }] })
+  personnels: Personnel[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Fourniture' }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Fourniture', index: true }] })
   fournitures: Fourniture[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Outils' }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Outils', index: true }] })
   outillages: Outils[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Devis' }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Devis', index: true }] })
   devis: Devis[];
 }
 
