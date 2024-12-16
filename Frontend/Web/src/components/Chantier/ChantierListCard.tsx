@@ -19,17 +19,20 @@ function ChantierListCard({ chantier, onClick }: ChantierListCardProps) {
   };
 
   return (
-    <div className="bg-white w-1/4 rounded-2xl shadow-xl overflow-x-hidden overflow-y-auto ">
+    <div className="bg-white w-9.5/10 md:w-1/3 lg:w-1/4 rounded-2xl shadow-xl overflow-x-hidden overflow-y-auto min-h-42 max-h-42 text-xs xl:text-sm">
       <div className="p-4">
-        <div className="flex w-full justify-between items-start border-b-2 border-gray-200 mb-4 pb-4">
+        <div className="
+        flex flex-col xl:flex-row 
+        w-full justify-between items-start border-b-2 border-gray-200 mb-4 pb-4
+        ">
           <div className="flex items-center justify-start gap-2 ">
             <p className="font-bold">{chantier.numero}</p>
             <h3 className="">{chantier.title}</h3>
           </div>
 
-          <div className="flex items-center gap-2">
-            <CiCalendarDate className="text-3xl text-green-800" />
-            <div className="italic text-sm">
+          <div className="flex items-center gap-2 self-end">
+            <CiCalendarDate className="text-3xl text-green-800 hidden 2xl:flex" />
+            <div className="italic xl:text-sm">
               <p>{formatDate(chantier.debut_prevu)}</p>
               <p>{formatDate(chantier.fin_prevu)}</p>
             </div>
@@ -42,7 +45,7 @@ function ChantierListCard({ chantier, onClick }: ChantierListCardProps) {
               <FaCircleInfo className="text-xl text-blue-800" />
               <p>{chantier.description}</p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="items-center gap-2 hidden xl:flex">
               <BiDetail className="text-xl text-blue-800" />
               <p>{chantier.notes}</p>
             </div>
