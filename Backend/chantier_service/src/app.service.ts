@@ -16,13 +16,6 @@ export class ChantierService {
   }
 
   async findAll(): Promise<Chantier[]> {
-    // return this.chantierModel
-    //   .find()
-    //   .populate('personnels')
-    //   .populate('fournitures')
-    //   .populate('outillages')
-    //   .populate('devis')
-    //   .exec();
     return this.chantierModel
       .aggregate([
         {
@@ -55,6 +48,11 @@ export class ChantierService {
             localField: 'devis',
             foreignField: '_id',
             as: 'devis_details',
+          },
+        },
+        {
+          $sort: {
+            debut_prevu: 1,
           },
         },
       ])
