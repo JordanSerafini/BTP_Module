@@ -1,4 +1,21 @@
 services:
+  frontend:
+    image: node:alpine
+    container_name: frontend
+    working_dir: /app
+    volumes:
+      - ./Frontend/Web:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    networks:
+      - mongo_network
+    command: sh -c "npm install && npm run dev -- --host"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5173/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   api_gateway:
     image: node:alpine
@@ -6,7 +23,7 @@ services:
     working_dir: /app
     restart: always
     volumes:
-      - ./api_gateway:/app
+      - ./Backend/api_gateway:/app
       - /app/node_modules
     ports:
       - 3000:3000
@@ -25,7 +42,7 @@ services:
     working_dir: /app
     restart: on-failure:5
     volumes:
-      - ./chantier_service:/app
+      - ./Backend/chantier_service:/app
       - /app/node_modules
     ports:
       - 4444:4444
@@ -36,7 +53,7 @@ services:
       REDIS_URL: "redis://redis:6379"
     command: sh -c "npm install && npm run start:dev"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4444/chantiers"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/chantiers"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -47,7 +64,7 @@ services:
     working_dir: /app
     restart: on-failure:5
     volumes:
-      - ./devis_service:/app
+      - ./Backend/devis_service:/app
       - /app/node_modules
     ports:
       - 4445:4445
@@ -58,7 +75,7 @@ services:
       REDIS_URL: "redis://redis:6379"
     command: sh -c "npm install && npm run start:dev"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4445/devis"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/devis"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -68,7 +85,7 @@ services:
     container_name: multi_service
     working_dir: /app
     volumes:
-      - ./multi_service:/app
+      - ./Backend/multi_service:/app
       - /app/node_modules
     ports:
       - 4446:4446
@@ -80,7 +97,7 @@ services:
       REDIS_URL: "redis://redis:6379"
     command: sh -c "npm install && npm run start:dev"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4446/multi"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/multi"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -114,7 +131,7 @@ services:
         condition: service_healthy
     working_dir: /app
     volumes:
-      - ./database:/app
+      - ./Database:/app
     command: sh -c "npm install mongoose && node init.js"
     networks:
       - mongo_network
@@ -163,6 +180,8 @@ networks:
   mongo_network:
     driver: bridge
     attachable: true
+
+
 
 volumes:
   mongo_data:
