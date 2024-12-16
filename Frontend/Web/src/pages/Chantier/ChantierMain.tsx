@@ -33,7 +33,7 @@ function ChantierMain() {
       {selectedChantierId ? (
         < ChantierDetail chantier_id={selectedChantierId} setSelectedChantierId={setSelectedChantierId} />
       ) : (
-        <div className="w-full h-full flex flex-wrap items-start justify-evenly gap-1">
+        <div className="w-full h-full flex flex-wrap items-start justify-evenly gap-1 gap-y-8">
           {chantiers.map((chantier) => (
             <ChantierListCard
               key={chantier._id}

@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
 import GlobalContext from "../../../context/GlobalContext";
 
+import NavMenu from "../../components/Menu/NavMenu";
 import ChantierMain from "../Chantier/ChantierMain";
+import DevisMain from "../Devis/DevisMain";
 
 const Home: React.FC = () => {
   const globalContext = useContext(GlobalContext);
@@ -30,7 +32,11 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-start items-center ">
+    <div className="w-full h-full flex justify-start items-center ">
+      <div className="">
+        <NavMenu />
+      </div>
+
       {content === "Home" && (
         <div className="w-full h-full justify-evenly flex">
           <button onClick={handleShowToast}>Afficher un Toast</button>
@@ -39,7 +45,8 @@ const Home: React.FC = () => {
           </button>
         </div>
       )}
-      {content === "Chantier" && <ChantierMain />}
+      {content === "Chantiers" && <ChantierMain />}
+      {content === "Devis" && <DevisMain />}
     </div>
   );
 };
