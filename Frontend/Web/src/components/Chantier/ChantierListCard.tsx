@@ -31,7 +31,7 @@ function ChantierListCard({ chantier, onClick }: ChantierListCardProps) {
           </div>
 
           <div className="flex items-center gap-2 self-end">
-            <CiCalendarDate className="text-3xl text-green-800 hidden 2xl:flex" />
+            <CiCalendarDate className="text-3xl text-green-900 hidden 2xl:flex" />
             <div className="italic xl:text-sm">
               <p>{formatDate(chantier.debut_prevu)}</p>
               <p>{formatDate(chantier.fin_prevu)}</p>
@@ -42,11 +42,11 @@ function ChantierListCard({ chantier, onClick }: ChantierListCardProps) {
         <div className="flex justify-between items-center">
           <div className="flex flex-col gap-2 p-2">
             <div className="flex items-center gap-2">
-              <FaCircleInfo className="text-xl text-blue-800" />
+              <FaCircleInfo className="text-xl text-blue-900" />
               <p>{chantier.description}</p>
             </div>
             <div className="items-center gap-2 hidden xl:flex">
-              <BiDetail className="text-xl text-blue-800" />
+              <BiDetail className="text-xl text-blue-900" />
               <p>{chantier.notes}</p>
             </div>
           </div>
