@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Chantier } from './schema/Chantier.schema';
-import { ChantierDocument } from './schema/Chantier.schema';
+import { Chantier } from './schemas/Chantier.schema';
+import { ChantierDocument } from './schemas/Chantier.schema';
 
 @Injectable()
 export class ChantierService {
