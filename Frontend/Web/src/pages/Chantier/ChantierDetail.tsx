@@ -12,6 +12,8 @@ function ChantierDetail({ chantier_id, setSelectedChantierId }: ChantierDetailPr
     null
   );
 
+  console.log(selectedChantier);
+
   useEffect(() => {
     const fetchChantier = async () => {
       try {

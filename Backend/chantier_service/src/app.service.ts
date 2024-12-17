@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Chantier } from 'schemas/Chantier.schema';
 import { ChantierDocument } from 'schemas/Chantier.schema';
 
@@ -60,7 +60,45 @@ export class ChantierService {
   }
 
   async findOne(id: string): Promise<Chantier> {
-    return this.chantierModel.findById(id).exec();
+    const result = await this.chantierModel.aggregate([
+      {
+        $match: { _id: new Types.ObjectId(id) },
+      },
+      {
+        $lookup: {
+          from: 'personnels',
+          localField: 'personnels',
+          foreignField: '_id',
+          as: 'personnels_details',
+        },
+      },
+      {
+        $lookup: {
+          from: 'fournitures',
+          localField: 'fournitures',
+          foreignField: '_id',
+          as: 'fournitures_details',
+        },
+      },
+      {
+        $lookup: {
+          from: 'outils',
+          localField: 'outillages',
+          foreignField: '_id',
+          as: 'outillages_details',
+        },
+      },
+      {
+        $lookup: {
+          from: 'devis',
+          localField: 'devis',
+          foreignField: '_id',
+          as: 'devis_details',
+        },
+      },
+    ]);
+
+    return result[0] || null;
   }
 
   async update(id: string, chantierData): Promise<Chantier> {
