@@ -9,7 +9,7 @@ export interface Chantier {
   title: string;
   description: string;
   notes: string;
-  commentaires: string;
+  commentaires: string[];
   client: string;
   status: string;
   debut_prevu: Date;
