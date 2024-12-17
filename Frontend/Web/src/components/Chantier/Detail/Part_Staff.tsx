@@ -46,20 +46,23 @@ function Part_Staff({ chantier }: PartProps) {
   };
 
   const updateChantier = async () => {
-    // Mapper les personnels pour ne garder que les IDs
-    const updatedChantier = {
+    // Mapper uniquement les _id des personnels sélectionnés
+    const personnelsIds = assignedPersonnel.map((staff) => staff._id);
+  
+    const updatedChantier: Chantier = {
       ...chantier,
-      personnels_details: assignedPersonnel, // Envoyer les détails du personnel au backend
+      personnels: personnelsIds,
     };
   
     try {
-      await chantierFunction.update(chantier._id, updatedChantier); 
+      await chantierFunction.update(chantier._id, updatedChantier);
       alert("Chantier mis à jour avec succès !");
     } catch (error) {
       console.error("Erreur lors de la mise à jour du chantier :", error);
       alert("Erreur lors de la mise à jour du chantier.");
     }
   };
+  
   
 
   return (
