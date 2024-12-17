@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 
-import { FaPhone } from "react-icons/fa6";
-import { IoMdPerson } from "react-icons/io";
-import { MdOutlineAlternateEmail } from "react-icons/md";
-import LeafletMap from "../../components/Map";
-
 import { chantier } from "../../utils/functions/chantier.function";
 import { Chantier } from "../../@types/interfaces/chantier.interface";
+import Part_1 from "../../components/Chantier/Detail/Part_1";
+import Part_2 from "../../components/Chantier/Detail/Part_2";
+import Part_3 from "../../components/Chantier/Detail/Part_3";
+import Title from "../../components/Chantier/Detail/Title";
 
 interface ChantierDetailProps {
   chantier_id: string;
@@ -45,64 +44,18 @@ function ChantierDetail({
   }
   return (
     <div className=" h-full w-full flex flex-col gap-4 ">
-      <div className="flex items-center justify-center w-full gap-1 sm:gap-4 text-sm md:text-xl lg:text-2xl border-b-2 border-gray-800 pb-4 mb-2">
-        <p>{selectedChantier.numero}</p>
-        <h2 className="font-bold">{selectedChantier.title}</h2>
-      </div>
-
-      <div className="border-b border-gray-800 pb-6 mb-4 flex flex-col md:flex-row overflow-hidden justify-between items-center gap-4 text-xs md:text-base lg:text-lg">
+      < Title chantier={selectedChantier} />
+      <div className="border-b border-gray-800 pb-8 sm:pb-6 mb-4 flex flex-col md:flex-row overflow-hidden justify-between items-center gap-4 text-xs md:text-base lg:text-lg">
         {/*-------------------------------------------------------------- Partie Gauche ---------------------------------------------------------------------------- */}
-        <div className=" w-10/10 md:w-1/2 justify- items-center flex flex-col gap-4 text-xs sm:text-sm md:text-base">
-          <div className="flex flex-col md:flex-row gap-4 w-full justify-evenly items-center ">
-            <div className="flex gap-2 items-center">
-              <IoMdPerson className="text-blue-800 " />
-              <p>{selectedChantier.client}</p>
-            </div>
-            <div className="flex flex-col lg:flex-row gap-2 items-center">
-              <div className="flex gap-2 items-center">
-                <FaPhone className="text-blue-800 " />
-                <p>0627080856</p>
-              </div>
-              <div className="flex gap-2 items-center">
-                <MdOutlineAlternateEmail className="text-blue-800 " />
-                <p>antoine.d@gmail.com</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-2 ">
-            <p>{selectedChantier.adresse}</p>
-            <p>{selectedChantier.code_postal}</p>
-            <p>{selectedChantier.ville} </p>
-          </div>
-        </div>
+        <Part_1 chantier={selectedChantier} />
         {/*-------------------------------------------------------------- Partie Droites > MAP ---------------------------------------------------------------------------- */}
-        <div className="md:w-1/2 w-9/10">
-          <LeafletMap
-            lon={selectedChantier.localisation.lon}
-            lat={selectedChantier.localisation.lat}
-            addresse={fullAdress}
-          />
-        </div>
+        <Part_2 chantier={selectedChantier} fullAdress={fullAdress} />
       </div>
-
-      <div className="flex flex-col items-center gap-2 md:flex-row justify-evenly border-b border-gray-800 pb-6 mb-2 text-xs sm:text-sm md:text-base">
-        <div className="flex gap-2 max-w-1/2 overflow-auto">
-          <h3 className="font-bold">Description:</h3>
-          <p>{selectedChantier.description || "Pas de description"}</p>
-        </div>
-        <div className="flex gap-2 max-w-1/2 overflow-auto">
-          <h3 className="font-bold">commentaires:</h3>
-          <ul className="list-disc list-inside">
-            {selectedChantier.commentaires.map((commentaire, index) => (
-              <li key={index}>{commentaire}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
+      <Part_3 chantier={selectedChantier} />
+        {/*-------------------------------------------------------------- Button Retour ---------------------------------------------------------------------------- */}
       <button
         onClick={() => setSelectedChantierId(null)}
-        className="mt-4 p-2 bg-blue-500 text-white rounded"
+        className="mt-4 p-2 bg-gray-800 text-white rounded"
       >
         Retour
       </button>
