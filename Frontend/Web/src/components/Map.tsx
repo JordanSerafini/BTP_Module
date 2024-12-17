@@ -20,14 +20,6 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    console.log(
-      "lon :",
-      lon,
-      "lat :",
-      lat,
-
-    );
-
     // Détruire l'ancienne carte si elle existe
     if (mapRef.current) {
       mapRef.current.remove();
@@ -38,7 +30,6 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
       const latNum = parseFloat(String(lat));
       const lonNum = parseFloat(String(lon));
 
-      console.log("latNum :", latNum, "lonNum :", lonNum);
 
       // Vérification de la validité des coordonnées
       if (!isNaN(latNum) && !isNaN(lonNum)) {
