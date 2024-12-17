@@ -4,6 +4,7 @@ import { Outils } from './outils.interface';
 import { Personnel } from './personnel.interface';
 
 export interface Chantier {
+  personnels_details: Personnel[];
   _id: string;
   numero: string;
   title: string;

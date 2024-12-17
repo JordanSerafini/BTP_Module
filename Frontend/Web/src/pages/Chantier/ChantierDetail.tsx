@@ -2,27 +2,21 @@ import { useEffect, useState } from "react";
 
 import { chantier } from "../../utils/functions/chantier.function";
 import { Chantier } from "../../@types/interfaces/chantier.interface";
+
+import Title from "../../components/Chantier/Detail/Title";
 import Part_1 from "../../components/Chantier/Detail/Part_1";
 import Part_2 from "../../components/Chantier/Detail/Part_2";
 import Part_3 from "../../components/Chantier/Detail/Part_3";
-import Title from "../../components/Chantier/Detail/Title";
+import Part_Staff from "../../components/Chantier/Detail/Part_Staff";
 
 interface ChantierDetailProps {
   chantier_id: string;
   setSelectedChantierId: (id: string | null) => void;
 }
 
-function ChantierDetail({
-  chantier_id,
-  setSelectedChantierId,
-}: ChantierDetailProps) {
-  const [selectedChantier, setSelectedChantier] = useState<Chantier | null>(
-    null
-  );
-
+function ChantierDetail({chantier_id, setSelectedChantierId,}: ChantierDetailProps) {
+  const [selectedChantier, setSelectedChantier] = useState<Chantier | null>(null);
   const [fullAdress, setFullAdress] = useState<string | null>(null);
-
-  //console.log(selectedChantier?.localisation);
 
   const fetchChantier = async () => {
     try {
@@ -39,6 +33,7 @@ function ChantierDetail({
     fetchChantier();
   }, [chantier_id]);
 
+  
   if (!selectedChantier) {
     return <div>Chargement des détails...</div>;
   }
@@ -51,7 +46,8 @@ function ChantierDetail({
         {/*-------------------------------------------------------------- Partie Droites > MAP ---------------------------------------------------------------------------- */}
         <Part_2 chantier={selectedChantier} fullAdress={fullAdress} />
       </div>
-      <Part_3 chantier={selectedChantier} />
+        <Part_3 chantier={selectedChantier} />
+        <Part_Staff chantier={selectedChantier} />
         {/*-------------------------------------------------------------- Button Retour ---------------------------------------------------------------------------- */}
       <button
         onClick={() => setSelectedChantierId(null)}

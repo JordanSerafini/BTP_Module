@@ -1,6 +1,8 @@
 export interface Personnel {
   _id: string;
-  user: string;
-  createdAt: Date;
-  updatedAt: Date;
+  name: string,
+  role: string,
+  active: boolean,
+  phone: string,
+  email: string,
 }
