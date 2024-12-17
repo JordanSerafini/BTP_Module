@@ -48,14 +48,15 @@ function ChantierDetail({
 
   return (
     <div className=" h-full w-full flex flex-col gap-4 ">
-      <div className="flex items-center justify-center w-full gap-4 text-2xl border-b-2 border-gray-800 pb-4 mb-2">
+      <div className="flex items-center justify-center w-full gap-1 sm:gap-4 text-sm md:text-xl lg:text-2xl border-b-2 border-gray-800 pb-4 mb-2">
         <p>{selectedChantier.numero}</p>
         <h2 className="font-bold">{selectedChantier.title}</h2>
       </div>
 
-      <div className="border-b border-gray-800 pb-6 mb-4 flex overflow-hidden justify-between items-center  h-1/3">
-        <div className="w-1/2 justify-evenly items-center flex flex-col gap-4">
-          <div className="flex gap-4 w-full justify-evenly items-center">
+      <div className="border-b border-gray-800 pb-6 mb-4 flex flex-col md:flex-row overflow-hidden justify-between items-center gap-4 text-xs md:text-base lg:text-lg">
+        {/*-------------------------------------------------------------- Partie Gauche ---------------------------------------------------------------------------- */}
+        <div className=" w-10/10 md:w-1/2 justify- items-center flex flex-col gap-4">
+          <div className="flex flex-col md:flex-row gap-4 w-full justify-evenly items-center">
             <div className="flex gap-2 items-center">
               <IoMdPerson className="text-blue-800 text-lg" />
               <p>{selectedChantier.client}</p>
@@ -75,7 +76,8 @@ function ChantierDetail({
             <p>{selectedChantier.ville} </p>
           </div>
         </div>
-        <div className="w-1/2"> 
+        {/*-------------------------------------------------------------- Partie Droites > MAP ---------------------------------------------------------------------------- */}
+        <div className="md:w-1/2 w-9/10"> 
         <LeafletMap lon={selectedChantier.localisation.lon} lat={selectedChantier.localisation.lat} addresse={fullAdress} />
         </div>
       </div>
