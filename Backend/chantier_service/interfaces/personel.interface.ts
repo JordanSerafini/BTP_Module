@@ -1,10 +1,10 @@
 import { HydratedDocument, Types } from 'mongoose';
 
-export interface Personnel {
+export interface Personel {
   _id: Types.ObjectId;
   user: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export type PersonnelDocument = HydratedDocument<Personnel>;
+export type PersonelDocument = HydratedDocument<Personel>;

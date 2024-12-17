@@ -1,10 +1,10 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 
 import { Document, Types } from 'mongoose';
-import { Devis } from 'src/interfaces/devis.interface';
-import { Fourniture } from 'src/interfaces/fourniture.interface';
-import { Outils } from 'src/interfaces/outils.interface';
-import { Personel } from 'src/interfaces/personel.interface';
+import { Devis } from '../interfaces/devis.interface';
+import { Fourniture } from '../interfaces/fourniture.interface';
+import { Outils } from '../interfaces/outils.interface';
+import { Personel } from '../interfaces/personel.interface';
 
 @Schema({ timestamps: true })
 export class Chantier {

@@ -1,5 +1,23 @@
-import { IsString, IsDate, IsArray, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsDate,
+  IsArray,
+  IsOptional,
+  IsNumber,
+  ValidateNested,
+} from 'class-validator';
 import { Types } from 'mongoose';
+import { Type } from 'class-transformer';
+
+class LocalisationDto {
+  @IsNumber()
+  @IsOptional()
+  lon?: number;
+
+  @IsNumber()
+  @IsOptional()
+  lat?: number;
+}
 
 export class CreateChantierDto {
   @IsString()
@@ -17,7 +35,7 @@ export class CreateChantierDto {
 
   @IsString()
   @IsOptional()
-  commentaires?: string;  
+  commentaires?: string;
 
   @IsString()
   client: string;
@@ -46,6 +64,21 @@ export class CreateChantierDto {
   @IsArray()
   @IsOptional()
   devis?: Types.ObjectId[];
+
+  // Nouveaux champs ajoutés
+  @IsString()
+  adresse: string;
+
+  @IsString()
+  code_postal: string;
+
+  @IsString()
+  ville: string;
+
+  @ValidateNested()
+  @Type(() => LocalisationDto)
+  @IsOptional()
+  localisation?: LocalisationDto;
 }
 
 export class UpdateChantierDto extends CreateChantierDto {}

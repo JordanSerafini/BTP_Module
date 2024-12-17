@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Devis, DevisDocument } from './schemas/devis.schema';
-import { CreateDevisDto, UpdateDevisDto } from './dto/devis.dto';
+import { CreateDevisDto, UpdateDevisDto } from './dtos/devis.dto';
 @Injectable()
 export class DevisService {
   constructor(

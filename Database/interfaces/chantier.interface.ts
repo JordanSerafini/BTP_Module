@@ -21,6 +21,11 @@ export interface Chantier {
   devis: Devis[];
   createdAt: Date;
   updatedAt: Date;
+  adresse: string;
+  code_postal: string;
+  ville: string;
+  localisation: { lon: number; lat: number };
 }
+
 
 export type MessageDocument = HydratedDocument<Chantier>;

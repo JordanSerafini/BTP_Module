@@ -4,7 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { ChantierController } from './app.controller';
 import { ChantierService } from './app.service';
-import { Chantier, ChantierSchema } from './schemas/Chantier.schema';
+import { Chantier, ChantierSchema } from 'schemas/Chantier.schema';
 
 @Module({
   imports: [
