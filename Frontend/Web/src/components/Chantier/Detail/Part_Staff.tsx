@@ -49,9 +49,8 @@ function Part_Staff({ chantier }: PartProps) {
     // Mapper uniquement les _id des personnels sélectionnés
     const personnelsIds = assignedPersonnel.map((staff) => staff._id);
   
-    const updatedChantier: Chantier = {
-      ...chantier,
-      personnels: personnelsIds,
+    const updatedChantier = {
+      personnels: personnelsIds, // On envoie uniquement les IDs
     };
   
     try {
