@@ -4,7 +4,6 @@ import { Outils } from './outils.interface';
 import { Personnel } from './personnel.interface';
 
 export interface Chantier {
-  personnels_details: Personnel[];
   _id: string;
   numero: string;
   title: string;
@@ -15,10 +14,10 @@ export interface Chantier {
   status: string;
   debut_prevu: Date;
   fin_prevu: Date;
-  personnels: Personnel[];
-  fournitures: Fourniture[];
-  outillages: Outils[];
-  devis: Devis[];
+  personnels: string[]; 
+  fournitures: string[];
+  outillages: string[];
+  devis: string[];
   createdAt: Date;
   updatedAt: Date;
   adresse: string;
@@ -27,3 +26,10 @@ export interface Chantier {
   localisation: { lon: number; lat: number };
 }
 
+export interface ChantierDetails extends Chantier {
+  personnels_details: Personnel[];
+  fournitures_details: Fourniture[];
+  outillages_details: Outils[];
+  devis_details: Devis[];
+
+}

@@ -102,14 +102,46 @@ export class ChantierService {
   }
 
   async update(id: string, chantierData): Promise<Chantier> {
+    console.log('chantierData', chantierData);
+    console.log('id', id);
+
+    // Convertir les IDs des tableaux en Types.ObjectId
+    if (chantierData.personnels) {
+      chantierData.personnels = chantierData.personnels.map(
+        (id: string) => new Types.ObjectId(id),
+      );
+    }
+
+    if (chantierData.fournitures) {
+      chantierData.fournitures = chantierData.fournitures.map(
+        (id: string) => new Types.ObjectId(id),
+      );
+    }
+
+    if (chantierData.outillages) {
+      chantierData.outillages = chantierData.outillages.map(
+        (id: string) => new Types.ObjectId(id),
+      );
+    }
+
+    if (chantierData.devis) {
+      chantierData.devis = chantierData.devis.map(
+        (id: string) => new Types.ObjectId(id),
+      );
+    }
+
     // Mise à jour des données du chantier
-    await this.chantierModel.findByIdAndUpdate(id, chantierData).exec();
+    await this.chantierModel
+      .findByIdAndUpdate(
+        id,
+        { $set: chantierData },
+        { new: true }, // Retourne le document mis à jour
+      )
+      .exec();
 
     // Retourne le chantier enrichi avec les détails
     const result = await this.chantierModel.aggregate([
-      {
-        $match: { _id: new Types.ObjectId(id) },
-      },
+      { $match: { _id: new Types.ObjectId(id) } },
       {
         $lookup: {
           from: 'personnels',

@@ -1,44 +1,46 @@
 import { useEffect, useState } from "react";
-
 import { personnels } from "../../../utils/functions/multiservice.function";
 import { chantier as chantierFunction } from "../../../utils/functions/chantier.function";
-import { Chantier } from "../../../@types/interfaces/chantier.interface";
+import { ChantierDetails } from "../../../@types/interfaces/chantier.interface";
+import { Personnel } from "../../../@types/interfaces/personnel.interface";
 
 import { IoPersonSharp } from "react-icons/io5";
 import { IoMdAdd, IoMdClose } from "react-icons/io";
-import { Personnel } from "../../../@types/interfaces/personnel.interface";
 
 interface PartProps {
-  chantier: Chantier;
+  chantier: ChantierDetails; // Chantier avec détails des personnels
 }
 
 function Part_Staff({ chantier }: PartProps) {
   const [personnelAvailable, setPersonnelAvailable] = useState<Personnel[]>([]);
   const [assignedPersonnel, setAssignedPersonnel] = useState<Personnel[]>(
-    chantier.personnels_details
+    chantier.personnels_details || []
   );
-  const [showList, setShowList] = useState(false); // Gérer l'affichage de la liste
+  const [showList, setShowList] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
-  // Récupère la liste du personnel disponible
+  // Récupérer les personnels disponibles
   const getPersonnelAvailable = async () => {
-    const allPersonnel = await personnels.getAll();
-    const filteredPersonnel = allPersonnel.filter((personnel: Personnel) => {
-      return !assignedPersonnel.some((staff) => staff._id === personnel._id);
-    });
-    setPersonnelAvailable(filteredPersonnel);
+    try {
+      const allPersonnel = await personnels.getAll();
+      const filteredPersonnel = allPersonnel.filter((personnel: Personnel) => {
+        return !assignedPersonnel.some((staff) => staff._id === personnel._id);
+      });
+      setPersonnelAvailable(filteredPersonnel);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des personnels :", error);
+    }
   };
 
   useEffect(() => {
     getPersonnelAvailable();
   }, [assignedPersonnel]);
 
-  // Ajouter un personnel
   const handleAddPersonnel = (personnel: Personnel) => {
     setAssignedPersonnel([...assignedPersonnel, personnel]);
     setShowList(false);
   };
 
-  // Retirer un personnel
   const handleRemovePersonnel = (personnel: Personnel) => {
     setAssignedPersonnel(
       assignedPersonnel.filter((staff) => staff._id !== personnel._id)
@@ -46,34 +48,39 @@ function Part_Staff({ chantier }: PartProps) {
   };
 
   const updateChantier = async () => {
-    // Mapper uniquement les _id des personnels sélectionnés
     const personnelsIds = assignedPersonnel.map((staff) => staff._id);
-  
+
     const updatedChantier = {
-      personnels: personnelsIds, // On envoie uniquement les IDs
+      ...chantier,
+      personnels: personnelsIds,
     };
-  
+
     try {
+      setIsUpdating(true);
       await chantierFunction.update(chantier._id, updatedChantier);
       alert("Chantier mis à jour avec succès !");
     } catch (error) {
-      console.error("Erreur lors de la mise à jour du chantier :", error);
+      console.error("Erreur lors de la mise à jour :", error);
       alert("Erreur lors de la mise à jour du chantier.");
+    } finally {
+      setIsUpdating(false);
     }
   };
-  
-  
 
   return (
     <div className="p-4 bg-gray-50 rounded-lg border">
-      {/* Section pour le personnel actuellement attribué */}
       <div className="flex gap-2 items-center mb-4">
         <h3 className="font-bold text-lg">Personnel actuellement attribué :</h3>
         <button
           onClick={updateChantier}
-          className="ml-auto bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition"
+          disabled={isUpdating}
+          className={`ml-auto px-4 py-1 rounded transition ${
+            isUpdating
+              ? "bg-gray-400 text-white cursor-not-allowed"
+              : "bg-blue-600 text-white hover:bg-blue-700"
+          }`}
         >
-          Valider
+          {isUpdating ? "Mise à jour..." : "Valider"}
         </button>
       </div>
 
@@ -95,7 +102,6 @@ function Part_Staff({ chantier }: PartProps) {
           </div>
         ))}
 
-        {/* Bouton pour afficher la liste */}
         <div
           className="flex items-center justify-center cursor-pointer bg-blue-200 text-blue-800 rounded-lg w-10 h-10 hover:bg-blue-300 transition"
           onClick={() => setShowList(!showList)}
@@ -104,7 +110,6 @@ function Part_Staff({ chantier }: PartProps) {
         </div>
       </div>
 
-      {/* Liste des personnels disponibles */}
       {showList && (
         <div className="bg-gray-100 p-4 rounded-xl mt-4 border border-gray-800">
           <h4 className="mb-2 font-bold">Ajouter du personnel :</h4>

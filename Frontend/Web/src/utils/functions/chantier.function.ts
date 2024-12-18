@@ -89,6 +89,7 @@ export const chantier = {
       }
 
       const data = await response.json();
+      console.log(data);
       return data;
     } catch (error) {
       console.error("Failed to update chantier:", error);
