@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { chantier } from "../../utils/functions/chantier.function";
-import { Chantier } from "../../@types/interfaces/chantier.interface";
+import { ChantierDetails } from "../../@types/interfaces/chantier.interface";
 
 import Title from "../../components/Chantier/Detail/Title";
 import Part_1 from "../../components/Chantier/Detail/Part_1";
@@ -14,8 +14,8 @@ interface ChantierDetailProps {
   setSelectedChantierId: (id: string | null) => void;
 }
 
-function ChantierDetail({chantier_id, setSelectedChantierId,}: ChantierDetailProps) {
-  const [selectedChantier, setSelectedChantier] = useState<Chantier | null>(null);
+function ChantierDetail({ chantier_id, setSelectedChantierId }: ChantierDetailProps) {
+  const [selectedChantier, setSelectedChantier] = useState<ChantierDetails | null>(null);
   const [fullAdress, setFullAdress] = useState<string | null>(null);
 
   const fetchChantier = async () => {
@@ -29,26 +29,28 @@ function ChantierDetail({chantier_id, setSelectedChantierId,}: ChantierDetailPro
     }
   };
 
+  // Fonction pour recharger les données après mise à jour
+  const refreshChantier = () => {
+    fetchChantier();
+  };
+
   useEffect(() => {
     fetchChantier();
   }, [chantier_id]);
 
-  
   if (!selectedChantier) {
     return <div>Chargement des détails...</div>;
   }
+
   return (
-    <div className=" h-full w-full flex flex-col gap-4 ">
-      < Title chantier={selectedChantier} />
+    <div className="h-full w-full flex flex-col gap-4">
+      <Title chantier={selectedChantier} />
       <div className="border-b border-gray-800 pb-8 sm:pb-6 mb-4 flex flex-col md:flex-row overflow-hidden justify-between items-center gap-4 text-xs md:text-base lg:text-lg">
-        {/*-------------------------------------------------------------- Partie Gauche ---------------------------------------------------------------------------- */}
         <Part_1 chantier={selectedChantier} />
-        {/*-------------------------------------------------------------- Partie Droites > MAP ---------------------------------------------------------------------------- */}
         <Part_2 chantier={selectedChantier} fullAdress={fullAdress} />
       </div>
-        <Part_3 chantier={selectedChantier} />
-        <Part_Staff chantier={selectedChantier} />
-        {/*-------------------------------------------------------------- Button Retour ---------------------------------------------------------------------------- */}
+      <Part_3 chantier={selectedChantier} />
+      <Part_Staff chantier={selectedChantier} refreshChantier={refreshChantier} />
       <button
         onClick={() => setSelectedChantierId(null)}
         className="mt-4 p-2 bg-gray-800 text-white rounded"
@@ -58,5 +60,6 @@ function ChantierDetail({chantier_id, setSelectedChantierId,}: ChantierDetailPro
     </div>
   );
 }
+
 
 export default ChantierDetail;

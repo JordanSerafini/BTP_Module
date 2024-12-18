@@ -102,10 +102,6 @@ export class ChantierService {
   }
 
   async update(id: string, chantierData): Promise<Chantier> {
-    console.log('chantierData', chantierData);
-    console.log('id', id);
-
-    // Convertir les IDs des tableaux en Types.ObjectId
     if (chantierData.personnels) {
       chantierData.personnels = chantierData.personnels.map(
         (id: string) => new Types.ObjectId(id),
@@ -130,16 +126,10 @@ export class ChantierService {
       );
     }
 
-    // Mise à jour des données du chantier
     await this.chantierModel
-      .findByIdAndUpdate(
-        id,
-        { $set: chantierData },
-        { new: true }, // Retourne le document mis à jour
-      )
+      .findByIdAndUpdate(id, { $set: chantierData }, { new: true })
       .exec();
 
-    // Retourne le chantier enrichi avec les détails
     const result = await this.chantierModel.aggregate([
       { $match: { _id: new Types.ObjectId(id) } },
       {

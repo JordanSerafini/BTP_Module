@@ -8,10 +8,11 @@ import { IoPersonSharp } from "react-icons/io5";
 import { IoMdAdd, IoMdClose } from "react-icons/io";
 
 interface PartProps {
-  chantier: ChantierDetails; // Chantier avec détails des personnels
+  chantier: ChantierDetails;
+  refreshChantier: () => void;
 }
 
-function Part_Staff({ chantier }: PartProps) {
+function Part_Staff({ chantier, refreshChantier }: PartProps) {
   const [personnelAvailable, setPersonnelAvailable] = useState<Personnel[]>([]);
   const [assignedPersonnel, setAssignedPersonnel] = useState<Personnel[]>(
     chantier.personnels_details || []
@@ -49,7 +50,6 @@ function Part_Staff({ chantier }: PartProps) {
 
   const updateChantier = async () => {
     const personnelsIds = assignedPersonnel.map((staff) => staff._id);
-
     const updatedChantier = {
       ...chantier,
       personnels: personnelsIds,
@@ -59,6 +59,7 @@ function Part_Staff({ chantier }: PartProps) {
       setIsUpdating(true);
       await chantierFunction.update(chantier._id, updatedChantier);
       alert("Chantier mis à jour avec succès !");
+      refreshChantier();
     } catch (error) {
       console.error("Erreur lors de la mise à jour :", error);
       alert("Erreur lors de la mise à jour du chantier.");
