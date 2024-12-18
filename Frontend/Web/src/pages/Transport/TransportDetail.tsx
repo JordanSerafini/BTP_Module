@@ -105,8 +105,8 @@ function DropZone({
 }
 
 function TransportDetailsPage() {
-  const MAX_CAPACITY = 400; // Capacité totale du camion
-  const ZONE_CAPACITY = 150; // Capacité maximale par zone
+  const MAX_CAPACITY = 400; 
+  const ZONE_CAPACITY = 133; 
 
   const [upperTier, setUpperTier] = useState<Package[]>([]);
   const [middleTier, setMiddleTier] = useState<Package[]>([]);
