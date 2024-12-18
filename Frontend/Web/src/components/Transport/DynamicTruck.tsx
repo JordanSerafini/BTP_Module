@@ -1,8 +1,8 @@
-import { useState } from "react";
+interface DynamicTruckProps {
+  percentage: number;
+}
 
-function DynamicTruck({ initialPercentage = 50 }) {
-  const [percentage, setPercentage] = useState(initialPercentage);
-
+function DynamicTruck({ percentage }: DynamicTruckProps) {
   let fillColor;
   if (percentage < 25) {
     fillColor = "green";
@@ -14,30 +14,36 @@ function DynamicTruck({ initialPercentage = 50 }) {
 
   return (
     <div style={{ width: "100%", position: "relative", marginTop: "10px" }}>
-      <div style={{ position: "absolute", top: "-15px", right: "0", fontSize: "24px", fontWeight: "bold", color: fillColor }}>
-        {percentage}%
+      <div
+        style={{
+          position: "absolute",
+          top: "-15px",
+          right: "0",
+          fontSize: "24px",
+          fontWeight: "bold",
+          color: fillColor,
+        }}
+      >
+        {Math.round(percentage)}%
       </div>
 
-      {/* Image du camion */}
-      <div style={{ width: "100%", maxWidth: "300px", marginBottom: "10px" }}>
+      <div style={{ width: "100%", maxWidth: "300px", marginBottom: "10px", position: "relative" }}>
         <img
           src="/camion.png"
           alt="Camion"
           style={{ width: "100%", height: "auto", display: "block" }}
         />
 
-        {/* Conteneur du coffre du camion */}
         <div
           style={{
             position: "absolute",
-            top: "21px", 
+            top: "21px",
             left: "26%",
             width: "65%",
-            height: "96px", 
-            overflow: "hidden"
+            height: "96px",
+            overflow: "hidden",
           }}
         >
-          {/* Zone de remplissage */}
           <div
             style={{
               width: `${percentage}%`,
@@ -49,16 +55,6 @@ function DynamicTruck({ initialPercentage = 50 }) {
           ></div>
         </div>
       </div>
-
-      {/* Contrôle pour ajuster le pourcentage (optionnel) */}
-      <input
-        type="range"
-        min="0"
-        max="100"
-        value={percentage}
-        onChange={(e) => setPercentage(parseInt(e.target.value))}
-        style={{ width: "100%", marginTop: "10px" }}
-      />
     </div>
   );
 }

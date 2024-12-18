@@ -1,4 +1,5 @@
 import TransportListCard from "../../components/Transport/TransportListCard"
+import TransportDetailsPage from "./TransportDetail"
 
 function TransportPage() {
   return (
@@ -23,7 +24,7 @@ function TransportPage() {
         available="200/400"
         shipmentNumber="S890324"
         truckModel="Iveco 80E18"
-        initialPercentage={60}
+        initialPercentage={50}
       />
       <TransportListCard
         title="Barcelona – Cordoba"
@@ -31,8 +32,10 @@ function TransportPage() {
         available="160/200"
         shipmentNumber="C998426"
         truckModel="Iveco 80E21"
-        initialPercentage={25}
+        initialPercentage={20}
       />
+
+      <TransportDetailsPage />
     </div>
   )
 }
