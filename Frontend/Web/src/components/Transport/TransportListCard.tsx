@@ -6,13 +6,11 @@ interface TransportListCardProps {
     available: string;
     shipmentNumber: string;
     truckModel: string;
-    initialPercentage: number;
     }
 
     function TransportListCard({ title, datetime, available, shipmentNumber, truckModel }: TransportListCardProps) {
-        // Calculer le pourcentage dynamiquement à partir de "available"
         const [current, total] = available.split("/").map(Number);
-        const percentage = Math.min((current / total) * 100, 100); // Pourcentage max 100%
+        const percentage = Math.min((current / total) * 100, 100);
       
         return (
           <div style={{

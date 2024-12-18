@@ -9,5 +9,11 @@ export default defineConfig({
     watch: {
       usePolling: true
     },
+  },
+  resolve: {
+    alias: {
+      "react-dnd": "react-dnd",
+      "react-dnd-html5-backend": "react-dnd-html5-backend",
+    },
   }
 })

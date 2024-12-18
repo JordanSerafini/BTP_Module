@@ -13,15 +13,16 @@ function DynamicTruck({ percentage }: DynamicTruckProps) {
   }
 
   return (
-    <div style={{ width: "100%", position: "relative", marginTop: "10px" }}>
+    <div style={{ width: "300px", position: "relative", marginTop: "10px" }}>
       <div
         style={{
           position: "absolute",
-          top: "-15px",
+          top: "-20px",
           right: "0",
           fontSize: "24px",
           fontWeight: "bold",
           color: fillColor,
+          zIndex: 5,
         }}
       >
         {Math.round(percentage)}%
@@ -38,9 +39,9 @@ function DynamicTruck({ percentage }: DynamicTruckProps) {
           style={{
             position: "absolute",
             top: "21px",
-            left: "26%",
-            width: "65%",
-            height: "96px",
+            left: "26.8%",
+            width: "67.4%",
+            height: "95px",
             overflow: "hidden",
           }}
         >
