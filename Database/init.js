@@ -73,6 +73,12 @@ const Personnel = mongoose.model('Personnel', personnelSchema);
 
 // Fonction de seed
 async function seedDatabase() {
+  
+  const chantierCount = await Chantier.countDocuments();
+  if (chantierCount > 0) {
+    console.log('La base de données est déjà peuplée. Aucun seed nécessaire.');
+    return;
+  }
   // Suppression des données existantes
   await Chantier.deleteMany();
   await Fourniture.deleteMany();

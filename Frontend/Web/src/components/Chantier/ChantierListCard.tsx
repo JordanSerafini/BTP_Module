@@ -31,7 +31,6 @@ function ChantierListCard({ chantier, onClick }: ChantierListCardProps) {
       const spaceAbove = rect.top;
       const spaceBelow = window.innerHeight - rect.bottom;
 
-      // Décider de la position : "top" ou "bottom"
       if (spaceAbove < 120 && spaceBelow > 120) {
         setPopupPosition("bottom");
       } else {
@@ -55,7 +54,6 @@ function ChantierListCard({ chantier, onClick }: ChantierListCardProps) {
                 <p>{chantier.client}</p>
               </div>
 
-              {/* Icône d'adresse */}
               <div ref={iconRef} className="relative flex items-center gap-1">
                 <FaMapMarkerAlt
                   className="text-xl text-blue-900 md:text-sm xl:text-xl cursor-pointer"

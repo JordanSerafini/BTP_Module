@@ -11,7 +11,7 @@ function Part_2({chantier, fullAdress}: ChantierProps) {
 
 
   return (
-    <div className="md:w-1/2 w-9/10">
+    <div className="md:w-1/2 w-9/10 h-full">
           <LeafletMap
             lon={chantier.localisation.lon}
             lat={chantier.localisation.lat}

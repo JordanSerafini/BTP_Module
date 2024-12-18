@@ -64,7 +64,7 @@ const LeafletMap: React.FC<LeafletMapProps> = ({
       {lon && lat ? (
         <div
           ref={mapContainerRef}
-          className="h-[300px] w-10/10 z-50 rounded-3xl "        
+          className="h-[360px] w-10/10 z-50 rounded-3xl "        
           ></div>
       ) : (
         <div className="h-full w-full flex flex-col items-center justify-center text-red-600 font-bold">

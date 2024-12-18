@@ -45,7 +45,7 @@ function ChantierDetail({ chantier_id, setSelectedChantierId }: ChantierDetailPr
   return (
     <div className="h-full w-full flex flex-col gap-4">
       <Title chantier={selectedChantier} />
-      <div className="border-b border-gray-800 pb-8 sm:pb-6 mb-4 flex flex-col md:flex-row overflow-hidden justify-between items-center gap-4 text-xs md:text-base lg:text-lg">
+      <div className="border-b border-gray-800 pb-8 sm:pb-6 mb-4 flex flex-col md:flex-row overflow-hidden justify-between items-center gap-4 text-xs md:text-base lg:text-lg min-h-96">
         <Part_1 chantier={selectedChantier} />
         <Part_2 chantier={selectedChantier} fullAdress={fullAdress} />
       </div>
