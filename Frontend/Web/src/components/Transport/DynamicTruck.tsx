@@ -1,11 +1,10 @@
 import { useState } from "react";
 
-function DynamicTruck() {
-  const [percentage, setPercentage] = useState(50); // Valeur par défaut 50%
+function DynamicTruck({ initialPercentage = 50 }) {
+  const [percentage, setPercentage] = useState(initialPercentage);
 
-  // Détermination de la couleur en fonction du pourcentage
   let fillColor;
-  if (percentage < 40) {
+  if (percentage < 25) {
     fillColor = "green";
   } else if (percentage < 80) {
     fillColor = "orange";
@@ -14,52 +13,44 @@ function DynamicTruck() {
   }
 
   return (
-    <div style={{ width: "300px", position: "relative" }}>
-      {/* Image du camion */}
-      <img
-        src="/camion.png"
-        alt="Camion"
-        style={{ width: "100%", height: "auto", display: "block" }}
-      />
-
-      {/* Conteneur du coffre du camion */}
-      <div
-        style={{
-          position: "absolute",
-          top: "20px",
-          left: "27%",
-          width: "67%",      // Largeur du coffre, ajustée selon l'image
-          height: "96px",    // Hauteur du coffre, ajustée selon l'image
-          overflow: "hidden" // Pour ne pas dépasser la zone du coffre
-        }}
-      >
-        {/* Zone de remplissage */}
-        <div
-          style={{
-            width: `${percentage}%`,
-            height: "100%",
-            backgroundColor: fillColor,
-            opacity: 0.7,
-            transition: "width 0.5s ease",
-          }}
-        ></div>
-      </div>
-
-      {/* Texte du pourcentage */}
-      <div
-        style={{
-          position: "absolute",
-          top: "10%",
-          right: "5%",
-          color: fillColor,
-          fontSize: "24px",
-          fontWeight: "bold",
-        }}
-      >
+    <div style={{ width: "100%", position: "relative", marginTop: "10px" }}>
+      <div style={{ position: "absolute", top: "-15px", right: "0", fontSize: "24px", fontWeight: "bold", color: fillColor }}>
         {percentage}%
       </div>
 
-      {/* Contrôle pour ajuster le pourcentage */}
+      {/* Image du camion */}
+      <div style={{ width: "100%", maxWidth: "300px", marginBottom: "10px" }}>
+        <img
+          src="/camion.png"
+          alt="Camion"
+          style={{ width: "100%", height: "auto", display: "block" }}
+        />
+
+        {/* Conteneur du coffre du camion */}
+        <div
+          style={{
+            position: "absolute",
+            top: "21px", 
+            left: "26%",
+            width: "65%",
+            height: "96px", 
+            overflow: "hidden"
+          }}
+        >
+          {/* Zone de remplissage */}
+          <div
+            style={{
+              width: `${percentage}%`,
+              height: "100%",
+              backgroundColor: fillColor,
+              opacity: 0.7,
+              transition: "width 0.5s ease",
+            }}
+          ></div>
+        </div>
+      </div>
+
+      {/* Contrôle pour ajuster le pourcentage (optionnel) */}
       <input
         type="range"
         min="0"
