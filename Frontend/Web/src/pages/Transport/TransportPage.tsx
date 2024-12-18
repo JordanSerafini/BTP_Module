@@ -8,7 +8,7 @@ function TransportPage() {
       <TransportListCard
           title="Barcelona – Seville"
           datetime="15 Jun, 8:00 PM"
-          available="200/400"
+          available="100/400"
           shipmentNumber="S890324"
           truckModel="Iveco 80E18"
           
