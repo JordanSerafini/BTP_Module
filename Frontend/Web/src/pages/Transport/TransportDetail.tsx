@@ -44,26 +44,48 @@ function DraggablePackage({ pkg }: { pkg: Package }) {
 }
 
 // Composant pour chaque zone du camion
-function DropZone({ title, onDrop, packages }: { title: string; onDrop: (pkg: Package) => void; packages: Package[] }) {
-  const [, dropRef] = useDrop({
-    accept: "PACKAGE",
-    drop: (item: Package) => onDrop(item),
-  });
-
+function DropZone({
+  title,
+  onDrop,
+  packages,
+  maxCapacity,
+}: {
+  title: string;
+  onDrop: (pkg: Package) => void;
+  packages: Package[];
+  maxCapacity: number;
+}) {
   const totalWeight = packages.reduce((sum: number, pkg: Package) => sum + pkg.weight, 0);
+
+  const [{ canDrop, isOver }, dropRef] = useDrop({
+    accept: "PACKAGE",
+    drop: (item: Package) => {
+      if (totalWeight + item.weight <= maxCapacity) {
+        onDrop(item);
+      }
+    },
+    canDrop: (item: Package) => totalWeight + item.weight <= maxCapacity,
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  });
 
   return (
     <div
       ref={dropRef}
       style={{
-        backgroundColor: "#e9e9e9",
+        backgroundColor: isOver && canDrop ? "#d4edda" : "#e9e9e9",
         border: "2px dashed #ccc",
         borderRadius: "8px",
         minHeight: "150px",
         padding: "10px",
+        opacity: canDrop ? 1 : 0.6, // Rend la zone moins opaque si le drop n'est pas possible
       }}
     >
-      <h3 style={{ marginBottom: "10px" }}>{title} - {totalWeight} kg</h3>
+      <h3 style={{ marginBottom: "10px" }}>
+        {title} - {totalWeight} / {maxCapacity} kg
+      </h3>
       {packages.map((pkg: Package) => (
         <div
           key={pkg.id}
@@ -83,6 +105,9 @@ function DropZone({ title, onDrop, packages }: { title: string; onDrop: (pkg: Pa
 }
 
 function TransportDetailsPage() {
+  const MAX_CAPACITY = 400; // Capacité totale du camion
+  const ZONE_CAPACITY = 150; // Capacité maximale par zone
+
   const [upperTier, setUpperTier] = useState<Package[]>([]);
   const [middleTier, setMiddleTier] = useState<Package[]>([]);
   const [lowerTier, setLowerTier] = useState<Package[]>([]);
@@ -91,7 +116,7 @@ function TransportDetailsPage() {
     (sum, pkg) => sum + pkg.weight,
     0
   );
-  const percentage = Math.min((totalWeight / 4), 100);
+  const percentage = Math.min((totalWeight / MAX_CAPACITY) * 100, 100);
 
   const handleDrop = (zoneSetter: React.Dispatch<React.SetStateAction<Package[]>>, pkg: Package) => {
     zoneSetter((prev) => [...prev, pkg]);
@@ -105,7 +130,7 @@ function TransportDetailsPage() {
           <h2>Truck load</h2>
           <DynamicTruck percentage={percentage} />
           <p>
-            Available, kg: <strong>{totalWeight} / 400</strong>
+            Total Weight: <strong>{totalWeight} / {MAX_CAPACITY} kg</strong>
           </p>
 
           {/* Zones du camion */}
@@ -113,16 +138,19 @@ function TransportDetailsPage() {
             title="Upper tier"
             onDrop={(pkg: Package) => handleDrop(setUpperTier, pkg)}
             packages={upperTier}
+            maxCapacity={ZONE_CAPACITY}
           />
           <DropZone
             title="Middle tier"
             onDrop={(pkg: Package) => handleDrop(setMiddleTier, pkg)}
             packages={middleTier}
+            maxCapacity={ZONE_CAPACITY}
           />
           <DropZone
             title="Lower tier"
             onDrop={(pkg: Package) => handleDrop(setLowerTier, pkg)}
             packages={lowerTier}
+            maxCapacity={ZONE_CAPACITY}
           />
         </div>
 
