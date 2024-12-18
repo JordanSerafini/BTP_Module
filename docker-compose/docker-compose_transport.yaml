@@ -1,3 +1,5 @@
+version: '3.9'
+
 services:
   frontend:
     image: node:alpine
@@ -50,10 +52,8 @@ services:
       - transport_network
     volumes:
       - transport_data:/var/lib/postgresql/data
-      - ./Transport_Database/SQL/init_db.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./Transport_Database/SQL/seed.sql:/docker-entrypoint-initdb.d/seed.sql
-
-
+      - ./Transport_Database/Sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./Transport_Database/Sql/seed.sql:/docker-entrypoint-initdb.d/seed.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -h localhost"]
       interval: 10s

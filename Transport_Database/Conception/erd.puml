@@ -1,0 +1,170 @@
+@startuml ERD_Transport
+skinparam linetype ortho
+
+entity company {
+  + id: INT [PK]
+  + name: VARCHAR(100)
+  + email: VARCHAR(100)
+  + phone: VARCHAR(20)
+  + address_id: INT [FK -> address.id]
+  + created_at: DATETIME
+}
+
+entity address {
+  + id: INT [PK]
+  + street: VARCHAR(255)
+  + city: VARCHAR(100)
+  + state: VARCHAR(100)
+  + country: VARCHAR(100)
+  + postal_code: VARCHAR(20)
+  + latitude: DECIMAL(9,6)
+  + longitude: DECIMAL(9,6)
+  + created_at: DATETIME
+}
+
+entity customer {
+  + id: INT [PK]
+  + company_id: INT [FK -> company.id]
+  + name: VARCHAR(100)
+  + email: VARCHAR(100)
+  + phone: VARCHAR(20)
+  + address_id: INT [FK -> address.id]
+  + created_at: DATETIME
+}
+
+entity warehouse {
+  + id: INT [PK]
+  + company_id: INT [FK -> company.id]
+  + name: VARCHAR(100)
+  + address_id: INT [FK -> address.id]
+  + capacity: INT
+  + created_at: DATETIME
+}
+
+entity truck {
+  + id: INT [PK]
+  + company_id: INT [FK -> company.id]
+  + license_plate: VARCHAR(20)
+  + capacity: INT
+  + model: VARCHAR(50)
+  + created_at: DATETIME
+}
+
+entity driver {
+  + id: INT [PK]
+  + company_id: INT [FK -> company.id]
+  + name: VARCHAR(100)
+  + license_number: VARCHAR(50)
+  + phone: VARCHAR(20)
+  + created_at: DATETIME
+}
+
+entity product {
+  + id: INT [PK]
+  + company_id: INT [FK -> company.id]
+  + name: VARCHAR(100)
+  + weight: INT
+  + created_at: DATETIME
+}
+
+entity order_status {
+  + id: INT [PK]
+  + code: VARCHAR(50)
+  + label: VARCHAR(100)
+}
+
+entity shipment_status {
+  + id: INT [PK]
+  + code: VARCHAR(50)
+  + label: VARCHAR(100)
+}
+
+entity "order" {
+  + id: INT [PK]
+  + company_id: INT [FK -> company.id]
+  + customer_id: INT [FK -> customer.id]
+  + warehouse_id: INT [FK -> warehouse.id]
+  + total_weight: INT
+  + status_id: INT [FK -> order_status.id]
+  + created_at: DATETIME
+  + updated_at: DATETIME
+}
+
+entity order_item {
+  + id: INT [PK]
+  + order_id: INT [FK -> order.id]
+  + product_id: INT [FK -> product.id]
+  + quantity: INT
+  + unit_weight: INT
+  + created_at: DATETIME
+}
+
+entity route {
+  + id: INT [PK]
+  + company_id: INT [FK -> company.id]
+  + name: VARCHAR(100)
+  + start_warehouse_id: INT [FK -> warehouse.id]
+  + end_warehouse_id: INT [FK -> warehouse.id]
+  + created_at: DATETIME
+}
+
+entity route_stop {
+  + id: INT [PK]
+  + route_id: INT [FK -> route.id]
+  + warehouse_id: INT [FK -> warehouse.id]
+  + stop_order: INT
+  + arrival_eta: DATETIME
+  + departure_eta: DATETIME
+}
+
+entity shipment {
+  + id: INT [PK]
+  + order_id: INT [FK -> order.id]
+  + truck_id: INT [FK -> truck.id]
+  + driver_id: INT [FK -> driver.id]
+  + route_id: INT [FK -> route.id]
+  + status_id: INT [FK -> shipment_status.id]
+  + created_at: DATETIME
+  + updated_at: DATETIME
+}
+
+
+' =========================
+'      RELATIONSHIPS
+' =========================
+
+company }o--o{ address : "has address"
+customer }|--|| company : "belongs to"
+customer }o--o{ address : "resides at"
+
+warehouse }|--|| company : "belongs to"
+warehouse }o--o{ address : "located at"
+
+truck }|--|| company : "owned by"
+
+driver }|--|| company : "works for"
+' (optionnel) Si besoin de l'adresse du driver
+' driver }o--o{ address : "contact info at"
+
+product }|--|| company : "offered by"
+
+"order" }|--|| customer : "placed by"
+"order" }|--|| warehouse : "ships from"
+"order" }|--|| order_status : "has status"
+
+order_item }|--|| "order" : "belongs to"
+order_item }|--|| product : "for product"
+
+route }|--|| company : "defined by"
+route }|--|| warehouse : "start_warehouse_id"
+route }|--|| warehouse : "end_warehouse_id"
+route_stop }|--|| route : "part of"
+route_stop }|--|| warehouse : "stop at"
+
+shipment }|--|| "order" : "fulfills"
+shipment }|--|| truck : "loaded on"
+shipment }|--|| driver : "driven by"
+shipment }|--|| route : "follows"
+shipment }|--|| shipment_status : "has status"
+
+@enduml
