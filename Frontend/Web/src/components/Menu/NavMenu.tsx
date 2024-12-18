@@ -17,7 +17,7 @@ function NavMenu() {
   // Liste des items du menu
   const menuItems = [
     { label: "Home", icon: <FaHome />, value: "Home" },
-    { label: "Paramètres", icon: <FaCog />, value: "Paramètres" },
+    { label: "Transport", icon: <FaCog />, value: "Transport" },
     { label: "Chantiers", icon: <FaCog />, value: "Chantiers" },
     { label: "Devis", icon: <FaClipboardList />, value: "Devis" },
   ];

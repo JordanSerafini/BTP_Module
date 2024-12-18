@@ -18,7 +18,7 @@ function Part_1({ chantier }: ChantierProps) {
   };
 
   return (
-    <div className="bg-white p-2 h-10/10 rounded-xl w-10/10 md:w-1/2 justify-start items-center flex flex-col gap-4 text-xs sm:text-sm md:text-base">
+    <div className="bg-white-perso p-2 h-10/10 rounded-xl w-10/10 md:w-1/2 justify-start items-center flex flex-col gap-4 text-xs sm:text-sm md:text-base">
       <div className=" flex flex-col lg:flex-row gap-4 w-10/10 justify-evenly items-center ">
         <div className="flex gap-2 items-center">
           <IoMdPerson className="text-blue-800 " />

@@ -4,6 +4,7 @@ import GlobalContext from "../../../context/GlobalContext";
 import NavMenu from "../../components/Menu/NavMenu";
 import ChantierMain from "../Chantier/ChantierMain";
 import DevisMain from "../Devis/DevisMain";
+import TransportPage from "../Transport/TransportPage";
 
 const Home: React.FC = () => {
   const globalContext = useContext(GlobalContext);
@@ -12,24 +13,17 @@ const Home: React.FC = () => {
     throw new Error("GlobalContext must be used within a GlobalProvider");
   }
 
-  const { setToast, content, setContent } = globalContext;
+  const {  content, setContent } = globalContext;
 
-  const handleShowToast = () => {
-    setToast("Ceci est un toast personnalisé !", "info", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      className: "font-bold italic",
-      bodyClassName: "custom-toast-body",
-    });  
-  };
+
 
   const handleUpdateContent = () => {
     setContent("Chantier");
   };
+
+  const handleTransport = () => {
+    setContent("Transport");
+  }
 
   return (
     <div className="w-full h-full flex justify-start items-center ">
@@ -39,14 +33,17 @@ const Home: React.FC = () => {
 
       {content === "Home" && (
         <div className="w-full h-full justify-evenly flex">
-          <button onClick={handleShowToast}>Afficher un Toast</button>
           <button onClick={handleUpdateContent}>
             Page Chantier
+          </button>
+          <button onClick={handleTransport}>
+            Page Transport
           </button>
         </div>
       )}
       {content === "Chantiers" && <ChantierMain />}
       {content === "Devis" && <DevisMain />}
+      {content === "Transport" && <TransportPage/>}
     </div>
   );
 };
