@@ -29,7 +29,6 @@ function ChantierDetail({ chantier_id, setSelectedChantierId }: ChantierDetailPr
     }
   };
 
-  // Fonction pour recharger les données après mise à jour
   const refreshChantier = () => {
     fetchChantier();
   };
