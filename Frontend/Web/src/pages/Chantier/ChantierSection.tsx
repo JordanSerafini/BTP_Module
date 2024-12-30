@@ -12,7 +12,7 @@ function ChantierSection({ title, chantiers, handleCardClick }: ChantierSectionP
     <div className="w-full flex flex-col items-start justify-start gap-4">
       <h4 className="text-lg font-bold">{title} :</h4>
       {chantiers.length > 0 ? (
-        <div className="w-full flex flex-wrap items-start justify-evenly gap-4">
+        <div className=" w-full flex items-center justify-start gap-4">
           {chantiers.map((chantier) => (
             <ChantierListCard
               key={chantier._id}

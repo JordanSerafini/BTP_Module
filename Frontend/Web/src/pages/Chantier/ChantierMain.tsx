@@ -3,6 +3,7 @@ import ChantierDetail from "./ChantierDetail";
 import { ChantierDetails } from "../../@types/interfaces/chantier.interface";
 import { useChantier } from "../../Hooks/useChantier";
 import ChantierSection from "./ChantierSection";
+import ButtonsCat from "../../components/Chantier/UI/ButtonsCat";
 
 function ChantierMain() {
   const { getAll, getEverStartedChantiers, getNextWeekChantiers, getFutureChantiers, getWeeklyChantiers } = useChantier();
@@ -13,6 +14,7 @@ function ChantierMain() {
   const [nextWeekChantiers, setNextWeekChantiers] = useState<ChantierDetails[]>([]);
   const [futureChantiers, setFutureChantiers] = useState<ChantierDetails[]>([]);
   const [selectedChantierId, setSelectedChantierId] = useState<string | null>(null);
+  const [selectedChantier, setSelectedChantier] = useState<string>("currentWeek");
 
   useEffect(() => {
     const fetchChantiers = async () => {
@@ -43,27 +45,43 @@ function ChantierMain() {
           setSelectedChantierId={setSelectedChantierId}
         />
       ) : (
+        
         <div className="w-full h-full flex flex-col items-start justify-start gap-8 overflow-auto">
+          <div className="flex justify-evenly w-full h-10">
+          < ButtonsCat title="Déjà débuté" content="Déjà débuté" setSelectedChantier={setSelectedChantier} selectedChantier={selectedChantier} />
+          < ButtonsCat title="currentWeek" content="currentWeek" setSelectedChantier={setSelectedChantier} selectedChantier={selectedChantier} />
+          < ButtonsCat title="nextWeek" content="nextWeek" setSelectedChantier={setSelectedChantier} selectedChantier={selectedChantier} />
+          < ButtonsCat title="futur" content="futur" setSelectedChantier={setSelectedChantier} selectedChantier={selectedChantier} />
+          </div>
+          
+          {selectedChantier === "Déjà débuté" && (
           <ChantierSection
             title="Déjà débuté"
             chantiers={everStartedChantiers}
             handleCardClick={handleCardClick}
           />
+          )}
+          {selectedChantier === "currentWeek" && (
           <ChantierSection
-            title="Cette semaine"
+            title="currentWeek"
             chantiers={weeklyChantiers}
             handleCardClick={handleCardClick}
           />
+          )}
+          {selectedChantier === "nexttWeek" && (
           <ChantierSection
-            title="Semaine prochaine"
+            title="nexttWeek"
             chantiers={nextWeekChantiers}
             handleCardClick={handleCardClick}
           />
+          )}
+          {selectedChantier === "futur" && (
           <ChantierSection
-            title="À venir"
+            title="futur"
             chantiers={futureChantiers}
             handleCardClick={handleCardClick}
           />
+          )}
         </div>
       )}
     </div>

@@ -40,7 +40,7 @@ function ChantierListCard({ chantier, onClick }: ChantierListCardProps) {
   }, [showPopup]);
 
   return (
-    <div className="bg-white w-9.5/10 md:w-1/3 lg:w-1/4 shadow-xl min-h-42 max-h-42 text-xs xl:text-sm rounded-xl">
+    <div className=" bg-white w-9.5/10 md:w-1/3 lg:w-1/4 shadow-xl min-h-42 max-h-42 text-xs xl:text-sm rounded-xl">
       <div className="p-4">
         <div className="flex w-full justify-between items-start border-b-2 border-gray-200 mb-4 pb-4">
           <div className="flex flex-col gap-2">
