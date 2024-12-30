@@ -60,12 +60,47 @@ export function useChantier() {
     }
   };
 
+  const getEverStartedChantiers = (chantiers: ChantierDetails[]): ChantierDetails[] => {
+    return chantiers.filter((chantier) => new Date(chantier.debut_prevu) < new Date());
+  };
+
+  const getNextWeekChantiers = (chantiers: ChantierDetails[]): ChantierDetails[] => {
+    const now = new Date();
+    const nextWeek = new Date(now);
+    nextWeek.setDate(now.getDate() + 7);
+
+    return chantiers.filter((chantier) => {
+      const debutPrevu = new Date(chantier.debut_prevu);
+      return debutPrevu > now && debutPrevu <= nextWeek;
+    });
+  };
+
+  const getFutureChantiers = (chantiers: ChantierDetails[]): ChantierDetails[] => {
+    const now = new Date();
+    return chantiers.filter((chantier) => new Date(chantier.debut_prevu) > now);
+  }; 
+
+  const getWeeklyChantiers = (chantiers: ChantierDetails[]): ChantierDetails[] => {
+    const now = new Date();
+    const nextWeek = new Date(now);
+    nextWeek.setDate(now.getDate() + 7);
+
+    return chantiers.filter((chantier) => {
+      const debutPrevu = new Date(chantier.debut_prevu);
+      return debutPrevu > now && debutPrevu <= nextWeek;
+    });
+  }
+
   return {
     getAll,
     getOne,
     create,
     update,
     remove,
+    getEverStartedChantiers,
+    getNextWeekChantiers,
+    getFutureChantiers,
+    getWeeklyChantiers,
   };
 }
 
