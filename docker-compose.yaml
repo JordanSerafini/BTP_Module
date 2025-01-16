@@ -23,7 +23,7 @@ services:
       context: ./frontend_nextjs
       dockerfile: Dockerfile
     ports:
-      - "4444:4444"
+      - "7575:7575"
     volumes:
       - ./frontend_nextjs:/app
       - /app/node_modules
