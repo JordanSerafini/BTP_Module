@@ -8,6 +8,18 @@ const config: Config = {
       "./index.html",
       "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  mode: 'jit',
+  safelist: [
+	{
+	  // Inclut toutes les variantes de `border`, `text` et `bg` avec des couleurs standard de Tailwind
+	  pattern: /(border|text|bg)-(red|green|blue|yellow|purple|pink|gray|indigo)-(100|200|300|400|500|600|700|800|900)/,
+	},
+	{
+	  // Ajoutez si nécessaire d'autres types de classes, comme les tailles ou les arrondis
+	  pattern: /(rounded|p|m)-(sm|md|lg|xl)/,
+	},
+  ],
+  
   theme: {
   	extend: {
   		colors: {

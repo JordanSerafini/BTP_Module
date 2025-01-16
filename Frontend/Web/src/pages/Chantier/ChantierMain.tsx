@@ -48,15 +48,15 @@ function ChantierMain() {
         
         <div className="w-full h-full flex flex-col items-start justify-start gap-8 overflow-auto">
           <div className="flex justify-evenly w-full h-10">
-          < ButtonsCat title="Déjà débuté" content="Déjà débuté" setSelectedChantier={setSelectedChantier} selectedChantier={selectedChantier} />
+          < ButtonsCat title="En cours" content="En cours" setSelectedChantier={setSelectedChantier} selectedChantier={selectedChantier} />
           < ButtonsCat title="currentWeek" content="currentWeek" setSelectedChantier={setSelectedChantier} selectedChantier={selectedChantier} />
           < ButtonsCat title="nextWeek" content="nextWeek" setSelectedChantier={setSelectedChantier} selectedChantier={selectedChantier} />
           < ButtonsCat title="futur" content="futur" setSelectedChantier={setSelectedChantier} selectedChantier={selectedChantier} />
           </div>
           
-          {selectedChantier === "Déjà débuté" && (
+          {selectedChantier === "En cours" && (
           <ChantierSection
-            title="Déjà débuté"
+            title="En cours"
             chantiers={everStartedChantiers}
             handleCardClick={handleCardClick}
           />
