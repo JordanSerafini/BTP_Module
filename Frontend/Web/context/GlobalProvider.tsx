@@ -1,61 +1,66 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { ToastContainer, toast, ToastOptions } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import GlobalContext, { GlobalContextType, ToastType, ModalData } from "./GlobalContext";
+import GlobalContext, { ToastType, ModalData } from "./GlobalContext";
 
 const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [content, setContent] = useState<string>("Home");
+  const [modalData, setModalData] = useState<ModalData | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [refreshState, setRefreshState] = useState<boolean>(false);
 
   // Gestion des toasts
-  const setToast = (message: string, type: ToastType = "info", options?: ToastOptions) => {
-    const toastTypes = {
-      info: toast.info,
-      success: toast.success,
-      warning: toast.warning,
-      error: toast.error,
-    };
-    toastTypes[type](message, options);
-  };
+  const setToast = useCallback(
+    (message: string, type: ToastType = "info", options?: ToastOptions) => {
+      const toastTypes = {
+        info: toast.info,
+        success: toast.success,
+        warning: toast.warning,
+        error: toast.error,
+      };
+      toastTypes[type](message, options);
+    },
+    []
+  );
 
-  // Gestion de la modale
-  const [modalData, setModalData] = useState<ModalData | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const refresh = useCallback(() => {
+    setRefreshState((prev) => !prev);
+  }, []);
 
-  const openModal = (data: ModalData) => {
+  const openModal = useCallback((data: ModalData) => {
     setModalData(data);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setModalData(null);
     setIsModalOpen(false);
-  };
+  }, []);
 
-  const contextValue: GlobalContextType = {
-    setToast,
-    content,
-    setContent,
-    openModal,
-    closeModal,
-    modalData,
-    isModalOpen,
-  };
+  const contextValue = useMemo(
+    () => ({
+      setToast,
+      content,
+      setContent,
+      openModal,
+      closeModal,
+      modalData,
+      isModalOpen,
+      refresh,
+      refreshState,
+    }),
+    [content, modalData, isModalOpen, refreshState]
+  );
 
   return (
     <GlobalContext.Provider value={contextValue}>
       {children}
       <ToastContainer />
-      {/* Modale Générique */}
       {isModalOpen && modalData && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white rounded-lg p-4 shadow-lg max-w-md w-full">
-            {/* Titre */}
             {modalData.title && <h2 className="text-lg font-bold mb-2">{modalData.title}</h2>}
-
-            {/* Contenu */}
             <div className="mb-4">{modalData.content}</div>
-
-            {/* Actions */}
             <div className="flex justify-end gap-2">
               {modalData.actions || (
                 <button

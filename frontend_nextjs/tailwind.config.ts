@@ -1,23 +1,11 @@
 import type { Config } from "tailwindcss";
-//import tailwindScrollbar from 'tailwind-scrollbar';
 
-
-const config: Config = {
-    darkMode: ["class"],
-    content: [
-      "./index.html",
-      "./src/**/*.{js,ts,jsx,tsx}",
+export default {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  mode: 'jit',
-  safelist: [
-	{
-	  pattern: /(border|text|bg)-(red|green|blue|orange|yellow|purple|pink|gray|indigo)-(100|200|300|400|500|600|700|800|900)/,
-	},
-	{
-	  pattern: /(rounded|p|m)-(sm|md|lg|xl)/,
-	},
-  ],
-  
   theme: {
   	extend: {
   		colors: {
@@ -284,9 +272,6 @@ const config: Config = {
   		}
   	}
   },
-  
-  
-  plugins: [
-      //require("tailwindcss-animate")
-],}
-export default config;
+  plugins: [],
+} satisfies Config;
+

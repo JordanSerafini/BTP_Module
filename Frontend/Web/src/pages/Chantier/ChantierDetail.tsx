@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { chantier } from "../../utils/functions/chantier.function";
 import { ChantierDetails } from "../../@types/interfaces/chantier.interface";
@@ -8,6 +8,7 @@ import Part_1 from "../../components/Chantier/Detail/Part_1";
 import Part_2 from "../../components/Chantier/Detail/Part_2";
 //import Part_3 from "../../components/Chantier/Detail/Part_3";
 import Part_Staff from "../../components/Chantier/Detail/Part_Staff";
+import GlobalContext, { GlobalContextType } from "../../../context/GlobalContext";
 
 interface ChantierDetailProps {
   chantier_id: string;
@@ -17,8 +18,14 @@ interface ChantierDetailProps {
 function ChantierDetail({ chantier_id, setSelectedChantierId }: ChantierDetailProps) {
   const [selectedChantier, setSelectedChantier] = useState<ChantierDetails | null>(null);
   const [fullAdress, setFullAdress] = useState<string | null>(null);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const globalContext = useContext(GlobalContext) as GlobalContextType;
+  const refresh = globalContext.refresh;
+  console.log(refresh);
 
   const fetchChantier = async () => {
+    if (isFetching) return;
+    setIsFetching(true);
     try {
       const response = await chantier.getOne(chantier_id);
       setSelectedChantier(response);
@@ -26,15 +33,13 @@ function ChantierDetail({ chantier_id, setSelectedChantierId }: ChantierDetailPr
       setFullAdress(adress);
     } catch (error) {
       console.error("Erreur lors de la récupération du chantier :", error);
+    } finally {
+      setIsFetching(false);
     }
   };
 
-  const refreshChantier = () => {
-    fetchChantier();
-  };
-
   useEffect(() => {
-    fetchChantier();
+    fetchChantier(); // Appel initial
   }, [chantier_id]);
 
   if (!selectedChantier) {
@@ -48,8 +53,7 @@ function ChantierDetail({ chantier_id, setSelectedChantierId }: ChantierDetailPr
         <Part_1 chantier={selectedChantier} />
         <Part_2 chantier={selectedChantier} fullAdress={fullAdress} />
       </div>
-      {/* <Part_3 chantier={selectedChantier} /> */}
-      <Part_Staff chantier={selectedChantier} refreshChantier={refreshChantier} />
+      <Part_Staff chantier={selectedChantier} refreshChantier={refresh} />
       <button
         onClick={() => setSelectedChantierId(null)}
         className="mt-4 p-2 bg-gray-800 text-white rounded"
@@ -59,6 +63,7 @@ function ChantierDetail({ chantier_id, setSelectedChantierId }: ChantierDetailPr
     </div>
   );
 }
+
 
 
 export default ChantierDetail;
