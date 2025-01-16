@@ -23,14 +23,16 @@ services:
       context: ./frontend_nextjs
       dockerfile: Dockerfile
     ports:
-      - "5555:5555"
+      - "4444:4444"
     volumes:
       - ./frontend_nextjs:/app
       - /app/node_modules
-    environment:
-      - NODE_ENV=production
     networks:
       - mongo_network
+    environment:
+      # - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
 
   api_gateway:
     image: node:alpine
