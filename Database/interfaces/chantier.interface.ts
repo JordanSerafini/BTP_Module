@@ -8,8 +8,8 @@ export interface Chantier {
   _id: Types.ObjectId;
   numero: string;
   title: string;
-  description: string;
-  notes: string;
+  description: string[];
+  notes: string[];
   commentaires: string;
   client: string;
   status: string;

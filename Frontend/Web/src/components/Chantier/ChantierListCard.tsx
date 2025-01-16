@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
+// import Tag from "./UI/Tag";
 import { CiCalendarDate } from "react-icons/ci";
 import { FaCircleInfo } from "react-icons/fa6";
 import { IoMdPerson } from "react-icons/io";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
-
+import { GrUserWorker } from "react-icons/gr";
 import { Chantier } from "../../@types/interfaces/chantier.interface";
 
 interface ChantierListCardProps {
@@ -40,7 +41,7 @@ function ChantierListCard({ chantier, onClick }: ChantierListCardProps) {
   }, [showPopup]);
 
   return (
-    <div className=" bg-white w-9.5/10 md:w-1/3 lg:w-1/4 shadow-xl min-h-42 max-h-42 text-xs xl:text-sm rounded-xl">
+    <div className="bg-white w-4.5/10 shadow-xl min-h-42 max-h-42 text-xs xl:text-sm rounded-xl">
       <div className="p-4">
         <div className="flex w-full justify-between items-start border-b-2 border-gray-200 mb-4 pb-4">
           <div className="flex flex-col gap-2">
@@ -57,7 +58,7 @@ function ChantierListCard({ chantier, onClick }: ChantierListCardProps) {
               <div ref={iconRef} className="relative flex items-center gap-1">
                 <FaMapMarkerAlt
                   className="text-xl text-blue-900 md:text-sm xl:text-xl cursor-pointer"
-                  onClick={() => setShowPopup(!showPopup)}
+                  onClick={() => setShowPopup((prev) => !prev)}
                 />
                 <p>{chantier.ville}</p>
 
@@ -74,7 +75,10 @@ function ChantierListCard({ chantier, onClick }: ChantierListCardProps) {
                       w-56 flex flex-col items-center
                     `}
                   >
-                    <IoMdClose onClick={() => setShowPopup(false)} className="text-red-700 self-end text-base"/>
+                    <IoMdClose
+                      onClick={() => setShowPopup(false)}
+                      className="text-red-700 self-end text-base"
+                    />
                     <p>{chantier.adresse}</p>
                     <p>
                       {chantier.code_postal} - {chantier.ville}
@@ -84,7 +88,6 @@ function ChantierListCard({ chantier, onClick }: ChantierListCardProps) {
               </div>
             </div>
           </div>
-
           <div className="flex items-start gap-2 self-start">
             <CiCalendarDate className="text-2xl text-green-900 hidden 2xl:flex" />
             <div className="italic xl:text-sm">
@@ -93,12 +96,17 @@ function ChantierListCard({ chantier, onClick }: ChantierListCardProps) {
             </div>
           </div>
         </div>
-
         <div className="flex justify-between items-center">
-          <div className="flex flex-col gap-2 text-xs xl:text-sm">
-            <div className="flex items-center gap-2">
-              <FaCircleInfo className="text-xl text-green-900" />
-              <p>{chantier.description}</p>
+          <div className="w-full flex flex-col gap-2 text-xs xl:text-sm">
+            <div className="w-full justify-between flex items-center ">
+              <div className="flex gap-2 items-center">
+                <FaCircleInfo className="text-xl text-green-900" />
+                <p>{chantier.description}</p>
+              </div>
+              <div className="flex gap-1 items-center">
+                <GrUserWorker className="text-lg text-orange-800" />
+                <p className="font-bold text-xs">x {chantier.personnels.length}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -113,5 +121,6 @@ function ChantierListCard({ chantier, onClick }: ChantierListCardProps) {
     </div>
   );
 }
+
 
 export default ChantierListCard;

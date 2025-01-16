@@ -27,15 +27,15 @@ export class CreateChantierDto {
   title: string;
 
   @IsString()
-  description: string;
+  description: string[];
 
   @IsString()
   @IsOptional()
-  notes?: string;
+  notes?: string[];
 
   @IsString()
   @IsOptional()
-  commentaires?: string;
+  commentaires?: string[];
 
   @IsString()
   client: string;

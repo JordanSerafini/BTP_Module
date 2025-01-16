@@ -10,6 +10,7 @@ export interface ModalData {
 }
 
 export interface GlobalContextType {
+  refreshState: unknown;
   setToast: (message: string, type?: ToastType, options?: ToastOptions) => void;
   content: string;
   setContent: Dispatch<SetStateAction<string>>;
@@ -17,6 +18,7 @@ export interface GlobalContextType {
   closeModal: () => void;
   modalData: ModalData | null;
   isModalOpen: boolean;
+  refresh: () => boolean;
 }
 
 const GlobalContext = createContext<GlobalContextType | null>(null);

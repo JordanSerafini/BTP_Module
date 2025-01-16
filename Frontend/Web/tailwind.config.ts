@@ -8,6 +8,16 @@ const config: Config = {
       "./index.html",
       "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  mode: 'jit',
+  safelist: [
+	{
+	  pattern: /(border|text|bg)-(red|green|blue|orange|yellow|purple|pink|gray|indigo)-(100|200|300|400|500|600|700|800|900)/,
+	},
+	{
+	  pattern: /(rounded|p|m)-(sm|md|lg|xl)/,
+	},
+  ],
+  
   theme: {
   	extend: {
   		colors: {

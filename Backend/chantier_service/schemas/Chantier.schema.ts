@@ -18,7 +18,7 @@ export class Chantier {
   description: string;
 
   @Prop()
-  notes: string;
+  notes: [string];
 
   @Prop({ required: true })
   client: string;

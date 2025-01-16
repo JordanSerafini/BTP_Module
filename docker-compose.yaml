@@ -1,22 +1,38 @@
 services:
 
-  frontend:
-    image: node:alpine
-    container_name: frontend
-    working_dir: /app
-    volumes:
-      - ./Frontend/Web:/app
-      - /app/node_modules
+  # frontend:
+  #   image: node:alpine
+  #   container_name: frontend
+  #   working_dir: /app
+  #   volumes:
+  #     - ./Frontend/Web:/app
+  #     - /app/node_modules
+  #   ports:
+  #     - "5173:5173"
+  #   networks:
+  #     - mongo_network
+  #   command: sh -c "npm install && npm run dev -- --host"
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:5173/"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 3
+
+  frontend_next:
+    build:
+      context: ./frontend_nextjs
+      dockerfile: Dockerfile
     ports:
-      - "5173:5173"
+      - "4444:4444"
+    volumes:
+      - ./frontend_nextjs:/app
+      - /app/node_modules
     networks:
       - mongo_network
-    command: sh -c "npm install && npm run dev -- --host"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5173/"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+    environment:
+      # - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
 
   api_gateway:
     image: node:alpine

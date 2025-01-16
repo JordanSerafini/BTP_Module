@@ -52,6 +52,7 @@ function Part_Staff({ chantier, refreshChantier }: PartProps) {
 
   // Mettre à jour le chantier
   const updateChantier = async () => {
+    console.log(refreshChantier);
     const personnelsIds = assignedPersonnel.map((staff) => staff._id);
     const updatedChantier = {
       ...chantier,
@@ -67,6 +68,7 @@ function Part_Staff({ chantier, refreshChantier }: PartProps) {
         position: "top-center",
       });
       refreshChantier();
+
     } catch (error) {
       console.error("Erreur lors de la mise à jour :", error);
       setToast("Erreur lors de la mise à jour du chantier", "error");
@@ -90,7 +92,6 @@ function Part_Staff({ chantier, refreshChantier }: PartProps) {
       setAssignedPersonnel([...assignedPersonnel, ...localSelected]);
       closeModal(); 
     };
-
     return (
       <div>
         <ul className="pl-4">

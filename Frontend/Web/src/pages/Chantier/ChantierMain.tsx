@@ -1,91 +1,119 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import ChantierDetail from "./ChantierDetail";
 import { ChantierDetails } from "../../@types/interfaces/chantier.interface";
 import { useChantier } from "../../Hooks/useChantier";
 import ChantierSection from "./ChantierSection";
 import ButtonsCat from "../../components/Chantier/UI/ButtonsCat";
+import GlobalContext, {
+  GlobalContextType,
+} from "../../../context/GlobalContext";
 
-function ChantierMain() {
-  const { getAll, getEverStartedChantiers, getNextWeekChantiers, getFutureChantiers, getWeeklyChantiers } = useChantier();
-
-  const [chantiers, setChantiers] = useState<ChantierDetails[]>([]);
-  const [weeklyChantiers, setWeeklyChantiers] = useState<ChantierDetails[]>([]);
-  const [everStartedChantiers, setEverStartedChantiers] = useState<ChantierDetails[]>([]);
-  const [nextWeekChantiers, setNextWeekChantiers] = useState<ChantierDetails[]>([]);
-  const [futureChantiers, setFutureChantiers] = useState<ChantierDetails[]>([]);
+const ChantierMain: React.FC = () => {
+  const { getAll } = useChantier();
+  const globalContext = useContext(GlobalContext) as GlobalContextType;
+  const refresh = globalContext.refresh;
+  const [completedChantiers, setCompletedChantiers] = useState<ChantierDetails[]>([]);
+  const [inProgressChantiers, setInProgressChantiers] = useState<ChantierDetails[]>([]);
+  const [upcomingChantiers, setUpcomingChantiers] = useState<ChantierDetails[]>([]);
   const [selectedChantierId, setSelectedChantierId] = useState<string | null>(null);
-  const [selectedChantier, setSelectedChantier] = useState<string>("currentWeek");
+  const [selectedChantier, setSelectedChantier] = useState<string>("En cours");
+  const [isFetching, setIsFetching] = useState(false);
+
+  const fetchChantiers = useCallback(async () => {
+    if (isFetching) return;
+    setIsFetching(true);
+    try {
+      const data = await getAll();
+      setCompletedChantiers(
+        data.filter((chantier) => chantier.status === "Terminé")
+      );
+      setInProgressChantiers(
+        data.filter((chantier) => chantier.status === "En cours")
+      );
+      setUpcomingChantiers(
+        data.filter((chantier) => chantier.status === "À venir")
+      );
+      globalContext.setToast("Chantiers chargés avec succès", "success");
+    } catch (error) {
+      console.error("Erreur lors du fetch des chantiers", error);
+      globalContext.setToast(
+        "Erreur lors du chargement des chantiers",
+        "error"
+      );
+    } finally {
+      setIsFetching(false);
+    }
+  }, [refresh]);
 
   useEffect(() => {
-    const fetchChantiers = async () => {
-      try {
-        const data = await getAll();
-        setChantiers(data);
-
-        setWeeklyChantiers(getWeeklyChantiers(data));
-        setEverStartedChantiers(getEverStartedChantiers(data));
-        setNextWeekChantiers(getNextWeekChantiers(data));
-        setFutureChantiers(getFutureChantiers(data));
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchChantiers();
+  }, [fetchChantiers]);
+
+  useEffect(() => {
+    if (globalContext.refreshState) {
+      fetchChantiers();
+    }
+  }, [globalContext.refreshState, fetchChantiers]);
+
+  const handleCardClick = useCallback((id: string) => {
+    setSelectedChantierId(id);
   }, []);
 
-  const handleCardClick = (id: string) => {
-    setSelectedChantierId(id);
-  };
-
   return (
-    <div className="w-10/10 h-10/10 text-gray-900 bg-white-perso2 p-4">
+    <div className="w-full h-full text-gray-900 bg-white p-4">
       {selectedChantierId ? (
         <ChantierDetail
           chantier_id={selectedChantierId}
           setSelectedChantierId={setSelectedChantierId}
         />
       ) : (
-        
         <div className="w-full h-full flex flex-col items-start justify-start gap-8 overflow-auto">
           <div className="flex justify-evenly w-full h-10">
-          < ButtonsCat title="Déjà débuté" content="Déjà débuté" setSelectedChantier={setSelectedChantier} selectedChantier={selectedChantier} />
-          < ButtonsCat title="currentWeek" content="currentWeek" setSelectedChantier={setSelectedChantier} selectedChantier={selectedChantier} />
-          < ButtonsCat title="nextWeek" content="nextWeek" setSelectedChantier={setSelectedChantier} selectedChantier={selectedChantier} />
-          < ButtonsCat title="futur" content="futur" setSelectedChantier={setSelectedChantier} selectedChantier={selectedChantier} />
+            <ButtonsCat
+              title="Terminé"
+              content="Terminé"
+              setSelectedChantier={setSelectedChantier}
+              selectedChantier={selectedChantier}
+            />
+            <ButtonsCat
+              title="En cours"
+              content="En cours"
+              setSelectedChantier={setSelectedChantier}
+              selectedChantier={selectedChantier}
+            />
+            <ButtonsCat
+              title="À venir"
+              content="À venir"
+              setSelectedChantier={setSelectedChantier}
+              selectedChantier={selectedChantier}
+            />
           </div>
-          
-          {selectedChantier === "Déjà débuté" && (
-          <ChantierSection
-            title="Déjà débuté"
-            chantiers={everStartedChantiers}
-            handleCardClick={handleCardClick}
-          />
+
+          {selectedChantier === "En cours" && (
+            <ChantierSection
+              title="Chantiers en cours"
+              chantiers={inProgressChantiers}
+              handleCardClick={handleCardClick}
+            />
           )}
-          {selectedChantier === "currentWeek" && (
-          <ChantierSection
-            title="currentWeek"
-            chantiers={weeklyChantiers}
-            handleCardClick={handleCardClick}
-          />
+          {selectedChantier === "Terminé" && (
+            <ChantierSection
+              title="Chantiers terminés"
+              chantiers={completedChantiers}
+              handleCardClick={handleCardClick}
+            />
           )}
-          {selectedChantier === "nexttWeek" && (
-          <ChantierSection
-            title="nexttWeek"
-            chantiers={nextWeekChantiers}
-            handleCardClick={handleCardClick}
-          />
-          )}
-          {selectedChantier === "futur" && (
-          <ChantierSection
-            title="futur"
-            chantiers={futureChantiers}
-            handleCardClick={handleCardClick}
-          />
+          {selectedChantier === "À venir" && (
+            <ChantierSection
+              title="Chantiers à venir"
+              chantiers={upcomingChantiers}
+              handleCardClick={handleCardClick}
+            />
           )}
         </div>
       )}
     </div>
   );
-}
+};
 
 export default ChantierMain;
