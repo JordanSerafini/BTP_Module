@@ -153,6 +153,22 @@ services:
     networks:
       - mongo_network
 
+  api_graphql:
+    build:
+      context: ./Backend/api_graphql
+      dockerfile: Dockerfile
+    container_name: api_graphql
+    ports:
+      - "8787:8787"
+    depends_on:
+      - mongo_db
+    networks:
+      - mongo_network
+    environment:
+      NODE_ENV: development
+      MONGO_URI: mongodb://admin:secret@mongo_db:27017/btp_module_db
+    restart: always
+
   redis:
     image: redis:latest
     container_name: redis
@@ -182,13 +198,13 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: secret
       ME_CONFIG_MONGODB_URL: "mongodb://admin:secret@mongo_db:27017/btp_module_db?authSource=admin"
     ports:
-      - "8081:8081"
+      - "8082:8082"
     depends_on:
       - mongo_db
     networks:
       - mongo_network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8082/"]
       interval: 10s
       timeout: 5s
       retries: 3
