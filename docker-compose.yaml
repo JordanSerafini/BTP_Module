@@ -18,21 +18,21 @@ services:
   #     timeout: 5s
   #     retries: 3
 
-  frontend_next:
-    build:
-      context: ./frontend_nextjs
-      dockerfile: Dockerfile
-    ports:
-      - "4444:4444"
-    volumes:
-      - ./frontend_nextjs:/app
-      - /app/node_modules
-    networks:
-      - mongo_network
-    environment:
-      # - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
-      - WATCHPACK_POLLING=true
+  # frontend_next:
+  #   build:
+  #     context: ./frontend_nextjs
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "7575mo:7575mo"
+  #   volumes:
+  #     - ./frontend_nextjs:/app
+  #     - /app/node_modules
+  #   networks:
+  #     - mongo_network
+  #   environment:
+  #     # - NODE_ENV=development
+  #     - CHOKIDAR_USEPOLLING=true
+  #     - WATCHPACK_POLLING=true
 
   api_gateway:
     image: node:alpine
