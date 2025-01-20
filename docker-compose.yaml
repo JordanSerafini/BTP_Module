@@ -214,8 +214,6 @@ networks:
     driver: bridge
     attachable: true
 
-
-
 volumes:
   mongo_data:
   redis_data:
