@@ -12,6 +12,7 @@ function App() {
       <Router>
         <div className="w-screen h-screen">
           <Routes>
+            
             {/*<Route path="/login" element={<Login />} />*/}
             <Route element={<PrivateRoute />}>
               <Route path="/" element={<Home />} />
